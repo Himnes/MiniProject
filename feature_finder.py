@@ -45,6 +45,11 @@ def feature_finder(model):
     return pprint.pformat(score_keeper)
 
 #Test / Demo
-from sklearn import svm
-clf = svm.SVC(kernel='linear', C=1)
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(random_state=0)
 print(feature_finder(clf))
+
+
+
+#'acousticness', 'danceability', 'energy', 'loudness', 'speechiness', 'key', 'time_signature'
+
