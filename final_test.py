@@ -16,7 +16,8 @@ def train(model):
     features_pending=(features_pending-features_pending.mean())/features_pending.std() #Normalize data!
     features_pending = pd.concat([features_pending,categorical_features],axis = 1)
 
-    x = features_pending[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy() #Put the features you want to use here!
+    #Put the features you want to use here!
+    x = features_pending[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy() 
 
     model.fit(x,y)
     return model
@@ -31,7 +32,8 @@ def final_test(trained_model): #NOTE!! This assumes you have trained on normaliz
     features_pending=(features_pending-features_pending.mean())/features_pending.std() #Normalize data!
     features_pending = pd.concat([features_pending,categorical_features],axis = 1)
 
-    x = features_pending[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy() #Put the features you want to use here!
+    #Put the features you want to use here!
+    x = features_pending[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy() 
     prediction = trained_model.predict(x)
     str_prediction = [str(i) for i in prediction]
 
