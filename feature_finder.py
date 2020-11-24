@@ -50,6 +50,3 @@ clf = LogisticRegression(random_state=0)
 print(feature_finder(clf))
 
 
-
-#'acousticness', 'danceability', 'energy', 'loudness', 'speechiness', 'key', 'time_signature'
-

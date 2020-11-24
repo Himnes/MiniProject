@@ -7,6 +7,8 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 import statistics
 from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import BaggingClassifier
+
 
 x = pd.read_csv("training_data.csv")
 y = x.pop("label")
@@ -14,6 +16,9 @@ x = x[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].
 #x = x[["speechiness","instrumentalness"]].copy()
 
 x=(x-x.mean())/x.std()
+
 clf = LogisticRegression(random_state=0)
-score = statistics.mean(cross_val_score(clf, x, y, cv=5))
+score = cross_val_score(clf, x, y, cv=5)
+print(score)
+score = statistics.mean()
 print(score)
