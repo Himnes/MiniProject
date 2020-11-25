@@ -29,9 +29,13 @@ for state in range(20):
 
 
     from sklearn.metrics import accuracy_score
-    score = []
+
+    all_guess = []
     for model in models:
         guess = model.predict(X_test)
-        score.append(accuracy_score(y_test, guess))
+        print(guess.shape)
+        all_guess.append(guess)
+
+    score.append(accuracy_score(y_test, guess))
 
     print(state, statistics.mean(score))
