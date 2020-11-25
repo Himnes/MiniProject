@@ -1,3 +1,16 @@
+
+# import warnings filter
+from warnings import simplefilter
+# ignore all future warnings
+simplefilter(action='ignore', category=FutureWarning)
+
+
+
+
+
+
+
+from sklearn.metrics import accuracy_score
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 import statistics
@@ -5,12 +18,13 @@ from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import BaggingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-
-for state in range(20):
+import numpy as np
+score_sum = []
+for state in range(100):
     x = pd.read_csv("training_data.csv")
     y = x.pop("label").to_numpy()
-    #x = x[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy()
-    x = x[["speechiness", "loudness", "acousticness", "instrumentalness"]].copy()
+    x = x[["speechiness", "loudness", "acousticness", "instrumentalness", "tempo"]].copy()
+    #x = x[["speechiness", "loudness", "acousticness", "instrumentalness"]].copy()
 
     x=(x-x.mean())/x.std()
     x = x.to_numpy()
@@ -18,9 +32,9 @@ for state in range(20):
 
     x_len = len(X_train)
     data_set = []
-    for i in range(4):
-        data_set.append([X_train[int(i*0.2*x_len) : int((i+2)*0.2*x_len)], 
-                        y_train[int(i*0.2*x_len) : int((i+2)*0.2*x_len)]])
+    for i in range(5):
+        data_set.append([X_train[int(i*0.1*x_len) : int((i+6)*0.1*x_len)], 
+                        y_train[int(i*0.1*x_len) : int((i+6)*0.1*x_len)]])
 
     models = []
     for [x,y] in data_set:
@@ -28,14 +42,14 @@ for state in range(20):
         models.append(clf)
 
 
-    from sklearn.metrics import accuracy_score
 
-    all_guess = []
+    guess_sum = np.zeros(y_test.shape)
+    no_models = len(models)
     for model in models:
-        guess = model.predict(X_test)
-        print(guess.shape)
-        all_guess.append(guess)
+        guess_sum += model.predict(X_test)
+        
+    guess = np.round(guess_sum / no_models)
 
-    score.append(accuracy_score(y_test, guess))
+    score_sum.append(accuracy_score(y_test, guess))
 
-    print(state, statistics.mean(score))
+print("Stack Log", statistics.mean(score_sum))
