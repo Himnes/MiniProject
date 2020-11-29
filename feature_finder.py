@@ -48,5 +48,3 @@ def feature_finder(model):
 from sklearn.linear_model import LogisticRegression
 clf = LogisticRegression(random_state=0)
 print(feature_finder(clf))
-
-
