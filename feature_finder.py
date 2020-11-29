@@ -45,6 +45,6 @@ def feature_finder(model):
     return pprint.pformat(score_keeper)
 
 #Test / Demo
-from sklearn import svm
-clf = svm.SVC(kernel='linear', C=1)
-print(feature_finder(clf))
+#from sklearn import svm
+#clf = svm.SVC(kernel='linear', C=1)
+#print(feature_finder(clf))
