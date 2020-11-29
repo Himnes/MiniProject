@@ -45,6 +45,6 @@ def feature_finder(model):
     return pprint.pformat(score_keeper)
 
 #Test / Demo
-#from sklearn import svm
-#clf = svm.SVC(kernel='linear', C=1)
-#print(feature_finder(clf))
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression(random_state=0)
+print(feature_finder(clf))
