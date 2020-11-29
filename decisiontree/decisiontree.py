@@ -12,43 +12,37 @@ from sklearn.tree import DecisionTreeClassifier
 from graphviz import Source
 from sklearn import tree
 
-
-
 x = pd.read_csv("training_data.csv")
+song_test_data = pd.read_csv('songs_to_classify.csv')
+print(song_test_data.columns)
+
 y = x.pop("label")
 features_to_be_droped =['tempo', 'valence', 'energy','danceability', 'mode', 'instrumentalness', 'time_signature']
 x = x.drop(features_to_be_droped, axis=1)
-#x = x[["speechiness","instrumentalness"]].copy()
 x=(x-x.mean())/x.std()
-clf = tree_classifier = DecisionTreeClassifier(max_depth=5)
 
-score = cross_val_score(clf, x, y, cv=5)
-print(score)
-score = statistics.mean(score)
-print(score)
-
-# test on test data
-
-clf = DecisionTreeClassifier(max_depth=5)
-
-clf.fit(x.values, y.values)
-
-tree_plot = Source(tree.export_graphviz(clf, out_file='tree_best.dot', feature_names=x.columns, class_names=['LIKE', 'DISLIKE'], filled=True, rounded=True, special_characters=True))
-#tree_plot
-
-tree_view = Source.from_file('tree_best.dot')
-print(x.columns)
-tree_view.view()
-
-###
-song_test_data = pd.read_csv('songs_to_classify.csv')
-print(song_test_data.columns)
 song_test_data = song_test_data.drop(features_to_be_droped, axis=1)
 song_test_data=(song_test_data-song_test_data.mean())/song_test_data.std()
 
+max_depth = 0
+max_score = 0
+for i in range(1,7):
+  clf = DecisionTreeClassifier(max_depth=i)
+  score = cross_val_score(clf, x, y, cv=5)
+  print(i, score)
+  score = statistics.mean(score)
+  if max_score < score:
+     max_score = score
+     max_depth = i
+  print(i, score)
+
+clf = DecisionTreeClassifier(max_depth=max_depth)
+
+clf.fit(x.values, y.values)
+
 song_test_data['label'] = clf.predict(song_test_data)
 
-print(song_test_data.head(100))
+print(song_test_data.head(10))
 result = [''.join([row for row in str(song_test_data['label'].values)])]
 print(''.join(song_test_data['label'].values.astype(str)))
 
